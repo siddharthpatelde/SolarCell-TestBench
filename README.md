@@ -4,11 +4,12 @@
 This project aims to develop a test bench for analyzing the voltage and current behavior of a solar cell under varying surrounding temperatures. The project is a collaborative effort between **Konstantin Sang** and **Siddhart Patel**. Konstantin is responsible for the mechanical design and literature, while Siddhart handles the electronics and programming aspects.
 
 ## Project Goal
-The test bench will enable precise control and monitoring of the surrounding temperature for a solar cell, allowing for comprehensive analysis of how temperature affects the cell's performance. This is achieved by:
 
 1. **Monitoring surrounding temperature** with two DHT22 sensors.
 2. **Controlling a heating element** through a relay and MOSFET setup.
 3. **Implementing a P algorithm** for maintaining a desired temperature range, using real-time temperature feedback.
+
+*More mini goals will be added in the future as the project progresses.*
 
 ## Current Work Steps
 
@@ -36,9 +37,7 @@ The test bench will enable precise control and monitoring of the surrounding tem
 
 **Status:** In Progress
 
-*More steps will be added in the future as the project progresses.*
-
-## Getting Started
+*More steps will be added in the future*
 
 ### Prerequisites
 - Arduino or compatible microcontroller
