@@ -52,7 +52,9 @@ The test bench will enable precise control and monitoring of the surrounding tem
    git clone https://github.com/your-username/solar-cell-test-bench.git
 
 ## Author
-**Siddharth A. Patel**
+
+**Siddharth A. Patel**  
+GitHub: [siddharthpatelde](https://github.com/siddharthpatelde?tab=overview&from=2024-10-01&to=2024-10-17)
 
 ## Credits
 - **Circuit Design and Electronics Programming**: All coding, electronics, and circuit design are done by Siddharth A. Patel.
