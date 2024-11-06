@@ -16,6 +16,14 @@ The test bench will enable precise control and monitoring of the surrounding tem
 - Utilize two DHT22 temperature sensors to capture the ambient temperature.
 - Calculate the **RMS** and **average** temperature values from both sensors to ensure a precise and stable reading.
 
+**Status:** DONE
+
+**Video Demonstration:**  
+[![Step 1 Video](image/thumbnail_1.png)](https://drive.google.com/file/d/1SOkulpQlxXZBvUerqa7_w0ityK85tI0_/view?usp=sharing)
+
+**Library Used:**  
+- [DHT Sensor Library by Adafruit](https://github.com/adafruit/DHT-sensor-library)
+
 ### Step 2: Temperature Control
 - Integrate a heating element, controlled by a relay and MOSFET, to adjust the surrounding temperature.
 - Program the microcontroller to turn the heating element on or off as needed to reach target temperatures.
