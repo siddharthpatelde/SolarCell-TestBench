@@ -3,6 +3,8 @@
 // - Adafruit Unified Sensor Lib: https://github.com/adafruit/Adafruit_Sensor
 
 #include "DHT.h"
+#include <math.h>
+
 
 #define DHTPIN1 2     // Digital pin connected to the first DHT sensor
 #define DHTPIN2 3     // Digital pin connected to the second DHT sensor
@@ -31,26 +33,49 @@ void setup() {
 
 void loop() {
   // Reading temperature or humidity takes about 250 milliseconds!
-  delay(500);
+  delay(100);
   // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
   
   float t1 = dht1.readTemperature(); // Read temperature from the first sensor
   float t2 = dht2.readTemperature(); // Read temperature from the second sensor
 
-// Check if any reads failed for the first sensor
-  if (isnan(t1)) {
-    Serial.print("Temperature1:Error  ");
-  } else {
-    Serial.print("Temperature1:");
-    Serial.print(t1);
+// // Check if any reads failed for the first sensor
+//   if (isnan(t1)) {
+//     Serial.print("Temperature1:Error  ");
+//   } else {
+//     Serial.print("Temperature1:");
+//     Serial.print(t1);
+//   }
+
+//   Serial.print("  ");
+
+//   if (isnan(t2)) {
+//     Serial.println("Temperature2:Error");
+//   } else {
+//     Serial.print("Temperature2:");
+//     Serial.println(t2); // Use println at the end to move to the next line
+//   }
+
+    // Check if readings are valid, else handle error
+  if (isnan(t1) || isnan(t2)) {
+    Serial.println(F("Failed to read from one or both DHT sensors!"));
+    return;
   }
 
-  Serial.print("  ");
+  // Calculate average temperature
+  float averageTemp = (t1 + t2) / 2.0;
 
-  if (isnan(t2)) {
-    Serial.println("Temperature2:Error");
-  } else {
-    Serial.print("Temperature2:");
-    Serial.println(t2); // Use println at the end to move to the next line
-  }
+  // Calculate RMS temperature
+  float rmsTemp = sqrt((t1 * t1 + t2 * t2) / 2.0);
+
+  // Display results
+  Serial.print("Temperature1:");
+  Serial.print(t1);
+  Serial.print("  Temperature2:");
+  Serial.print(t2);
+  Serial.print("  Average_Temperature:");
+  Serial.print(averageTemp);
+  Serial.print("  RMS_Temperature:");
+  Serial.println(rmsTemp);
+
 }
