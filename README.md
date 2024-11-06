@@ -28,9 +28,13 @@ The test bench will enable precise control and monitoring of the surrounding tem
 - Integrate a heating element, controlled by a relay and MOSFET, to adjust the surrounding temperature.
 - Program the microcontroller to turn the heating element on or off as needed to reach target temperatures.
 
+**Status:** In Progress
+
 ### Step 3: Implementing a Control Algorithm
 - Develop a **Proportional (P) control algorithm** that uses the RMS temperature value as feedback.
 - Adjust the heating element in response to deviations from the desired temperature, helping stabilize the environment for the solar cell.
+
+**Status:** In Progress
 
 *More steps will be added in the future as the project progresses.*
 
@@ -46,3 +50,10 @@ The test bench will enable precise control and monitoring of the surrounding tem
 1. Clone this repository to your local machine.
    ```bash
    git clone https://github.com/your-username/solar-cell-test-bench.git
+
+## Author
+**Siddharth A. Patel**
+
+## Credits
+- **Circuit Design and Electronics Programming**: All coding, electronics, and circuit design are done by Siddharth A. Patel.
+- **Project Introduction and Mechanical/Literature Work**: Konstantin Sang introduced the project and is responsible for the mechanical design and literature.
