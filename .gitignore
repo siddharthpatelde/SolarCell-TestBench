@@ -1,0 +1,82 @@
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pkl
+.Python
+*.pyc
+*.pyo
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*.swn
+*.orig
+*.out
+*.err
+*.pid
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Environment files
+.env
+.env.local
+.venv/
+node_modules/
+
+# Compiled files
+*.o
+*.so
+*.dylib
+*.dll
+*.a
+*.lib
+
+# Archives
+*.zip
+*.tar.gz
+*.tar.bz2
+*.tar
+*.tgz
+
+# Generated files and builds
+dist/
+build/
+*.egg-info/
+*.egg
+
+# Backup files
+*.bak
+*.old
+*.backup
+
+# System files
+*.lock
+*.DS_Store
+ehthumbs.db
+Icon?
+._*
+.Spotlight-V100
+.Trashes
