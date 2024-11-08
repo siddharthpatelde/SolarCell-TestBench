@@ -29,7 +29,13 @@ This project aims to develop a test bench for analyzing the voltage and current 
 - Integrate a heating element, controlled by a relay, to adjust the surrounding temperature.
 - Program the microcontroller to turn the heating element on or off as needed to reach target temperatures.
 
-**Status:** In Progress
+**Status:** DONE
+
+**Video Demonstration:**  
+[![Step 2 Video](images/thumbnail_2.png)](https://drive.google.com/file/d/1z0Fc_PCY5TwjSFO1WZ3Zr_VHilqgq-di/view?usp=sharing)
+
+**Library Used:**  
+- [Relay Library](https://github.com/your-repo/relay-library) (if applicable)
 
 ### Step 3: Implementing a Control Algorithm
 - Develop a **Proportional (P) control algorithm** that uses the RMS temperature value as feedback.
