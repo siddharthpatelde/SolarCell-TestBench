@@ -6,7 +6,7 @@ This project aims to develop a test bench for analyzing the voltage and current 
 ## Project Goal
 
 1. **Monitoring surrounding temperature** with two DHT22 sensors.
-2. **Controlling a heating element** through a relay and MOSFET setup.
+2. **Controlling a heating element** through a relay setup.
 3. **Implementing a P algorithm** for maintaining a desired temperature range, using real-time temperature feedback.
 
 *More mini goals will be added in the future as the project progresses.*
@@ -26,7 +26,7 @@ This project aims to develop a test bench for analyzing the voltage and current 
 - [DHT Sensor Library by Adafruit](https://github.com/adafruit/DHT-sensor-library)
 
 ### Step 2: Temperature Control
-- Integrate a heating element, controlled by a relay and MOSFET, to adjust the surrounding temperature.
+- Integrate a heating element, controlled by a relay, to adjust the surrounding temperature.
 - Program the microcontroller to turn the heating element on or off as needed to reach target temperatures.
 
 **Status:** In Progress
