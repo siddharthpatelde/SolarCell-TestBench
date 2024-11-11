@@ -75,8 +75,10 @@ void loop() {
 
 // Adjusts for a gradual temperature increase to accommodate the DHT22 sensor's slow response time.
 void heat_algorithm(int on_time, int off_time){ 
-  digitalWrite(RELAY_PIN, HIGH);  // Turn on heating element
-  delay(on_time);
+  if((currentMillies - previousMillis2) >= on_time ){
+    digitalWrite(RELAY_PIN, HIGH);  // Turn on heating element
+  }
+
   digitalWrite(RELAY_PIN, LOW);  // Turn on heating element
   delay(off_time);
 }
