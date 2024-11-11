@@ -16,46 +16,61 @@ DHT dht2(DHTPIN2, DHTTYPE);  // Second DHT sensor
 
 const float desiredTemp = 35;  // Desired temperature in Celsius
 
+//to saperate rms calcution from main loop time
+unsigned long previousMillis1 = 0.0;
+unsigned long previousMillis2 = 0.0;
+
+const int rms_interval = 100;
+
+float error = 0.0; // Move error declaration here
+
 void setup() {
   Serial.begin(9600);
   Serial.println(F("DHTxx test with two sensors!"));
 
   dht1.begin();
   dht2.begin();
+  pinMode(RELAY_PIN, OUTPUT); // Set relay pin as output
 }
 
 void loop() {
-  // Reading temperature or humidity takes about 250 milliseconds!
-  delay(100);
-  // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
-  
-  float t1 = dht1.readTemperature(); // Read temperature from the first sensor
-  float t2 = dht2.readTemperature(); // Read temperature from the second sensor
 
-    // Check if readings are valid, else handle error
-  if (isnan(t1) || isnan(t2)) {
-    Serial.println(F("Failed to read from one or both DHT sensors!"));
-    return;
+  unsigned long currentMillies = millis();
+
+  if(currentMillies - previousMillis1 >= rms_interval){
+    previousMillis1 = currentMillies;
+
+      // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
+      float t1 = dht1.readTemperature(); // Read temperature from the first sensor
+      float t2 = dht2.readTemperature(); // Read temperature from the second sensor
+
+      // Check if readings are valid, else handle error
+      if (isnan(t1) || isnan(t2)) {
+        Serial.println(F("Failed to read from one or both DHT sensors!"));
+        return;
+      }
+
+      // Calculate average temperature
+      float averageTemp = (t1 + t2) / 2.0;
+
+      // Calculate RMS temperature
+      float rmsTemp = sqrt((t1 * t1 + t2 * t2) / 2.0);
+
+      Serial.print("RMS_Temperature:");
+      Serial.println(rmsTemp);
+
+      // Proportional control algorithm
+      error = desiredTemp - rmsTemp;   
   }
 
-  // Calculate average temperature
-  float averageTemp = (t1 + t2) / 2.0;
-
-  // Calculate RMS temperature
-  float rmsTemp = sqrt((t1 * t1 + t2 * t2) / 2.0);
-
-  Serial.print("RMS_Temperature:");
-  Serial.println(rmsTemp);
-
-  // Proportional control algorithm
-  float error = desiredTemp - rmsTemp;
-
-  if (error > 0) {
-    heat_algorithm(6000,4000);
-  } else {
-    digitalWrite(RELAY_PIN, LOW);   // Turn off heating element
+  if( (currentMillies - previousMillis2) >= 100 ){
+    currentMillies - previousMillis2;
+    if (error > 0) {
+      heat_algorithm(6000,4000);
+    } else {
+      digitalWrite(RELAY_PIN, LOW);   // Turn off heating element
+    }
   }
-
 }
 
 // Adjusts for a gradual temperature increase to accommodate the DHT22 sensor's slow response time.
