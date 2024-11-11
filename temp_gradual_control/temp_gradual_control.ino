@@ -16,12 +16,6 @@ DHT dht2(DHTPIN2, DHTTYPE);  // Second DHT sensor
 
 const float desiredTemp = 35;  // Desired temperature in Celsius
 
-/*Dead Band: The relay will only turn on if the temperature is below (desiredTemp - deadBand) 
-and will turn off if it’s above desiredTemp + deadBand. This prevents constant toggling when 
-close to the desired temperature.*/
-
-const float deadBand = 1.0;     // Dead band around the target temperature
-
 void setup() {
   Serial.begin(9600);
   Serial.println(F("DHTxx test with two sensors!"));
@@ -57,10 +51,17 @@ void loop() {
   float error = desiredTemp - rmsTemp;
 
   if (error > 0) {
-    digitalWrite(RELAY_PIN, HIGH);  // Turn on heating element
+    heat_algorithm(6000,4000);
   } else {
     digitalWrite(RELAY_PIN, LOW);   // Turn off heating element
   }
 
+}
 
+// Adjusts for a gradual temperature increase to accommodate the DHT22 sensor's slow response time.
+void heat_algorithm(int on_time, int off_time){ 
+  digitalWrite(RELAY_PIN, HIGH);  // Turn on heating element
+  delay(on_time);
+  digitalWrite(RELAY_PIN, LOW);  // Turn on heating element
+  delay(off_time);
 }
