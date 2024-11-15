@@ -1,0 +1,6 @@
+
+Raspberry Pi Pico Pinout for the Code:
+
+- GPIO 2: Connected to the first DHT sensor (DHTPIN1)
+- GPIO 3: Connected to the second DHT sensor (DHTPIN2)
+- GPIO 4: Connected to the relay (RELAY_PIN)
