@@ -48,7 +48,7 @@ void loop() {
     float averageTemp = (t1 + t2) / 2.0;
     float rmsTemp = sqrt((t1 * t1 + t2 * t2) / 2.0);
 
-    Serial.print("RMS_Temperature: ");
+    Serial.print("RMS_Temperature ");
     Serial.println(rmsTemp);
 
     error = desiredTemp - rmsTemp;   
