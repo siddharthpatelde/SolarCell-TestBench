@@ -5,7 +5,6 @@
 #include "DHT.h"
 #include <math.h>
 
-
 #define DHTPIN1 2     // Digital pin connected to the first DHT sensor
 #define DHTPIN2 3     // Digital pin connected to the second DHT sensor
 #define DHTTYPE DHT22 // DHT 22 (AM2302), AM2321
@@ -15,14 +14,11 @@ DHT dht1(DHTPIN1, DHTTYPE);  // First DHT sensor
 DHT dht2(DHTPIN2, DHTTYPE);  // Second DHT sensor
 
 const float desiredTemp = 35;  // Desired temperature in Celsius
-
-//to saperate rms calcution from main loop time
-unsigned long previousMillis1 = 0.0;
-unsigned long previousMillis2 = 0.0;
-
+unsigned long previousMillis1 = 0;
 const int rms_interval = 100;
 
-float error = 0.0; // Move error declaration here
+float error = 0.0; // Initialize with a default value
+bool relayState = false; // Track the relay state
 
 void setup() {
   Serial.begin(9600);
@@ -34,50 +30,50 @@ void setup() {
 }
 
 void loop() {
+  unsigned long currentMillis = millis();
+  
+  // Update RMS temperature and error
+  if (currentMillis - previousMillis1 >= rms_interval) {
+    previousMillis1 = currentMillis;
 
-  unsigned long currentMillies = millis();
+    float t1 = dht1.readTemperature();
+    float t2 = dht2.readTemperature();
 
-  if(currentMillies - previousMillis1 >= rms_interval){
-    previousMillis1 = currentMillies;
+    if (isnan(t1) || isnan(t2)) {
+      Serial.println(F("Failed to read from one or both DHT sensors!"));
+      digitalWrite(RELAY_PIN, LOW); // Ensure heating is off
+      return;
+    }
 
-      // Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
-      float t1 = dht1.readTemperature(); // Read temperature from the first sensor
-      float t2 = dht2.readTemperature(); // Read temperature from the second sensor
+    float averageTemp = (t1 + t2) / 2.0;
+    float rmsTemp = sqrt((t1 * t1 + t2 * t2) / 2.0);
 
-      // Check if readings are valid, else handle error
-      if (isnan(t1) || isnan(t2)) {
-        Serial.println(F("Failed to read from one or both DHT sensors!"));
-        return;
-      }
+    Serial.print("RMS_Temperature: ");
+    Serial.println(rmsTemp);
 
-      // Calculate average temperature
-      float averageTemp = (t1 + t2) / 2.0;
-
-      // Calculate RMS temperature
-      float rmsTemp = sqrt((t1 * t1 + t2 * t2) / 2.0);
-
-      Serial.print("RMS_Temperature:");
-      Serial.println(rmsTemp);
-
-      // Proportional control algorithm
-      error = desiredTemp - rmsTemp;   
+    error = desiredTemp - rmsTemp;   
   }
 
-  
-    if (error > 0) {
-      heat_algorithm(6000,4000,currentMillies);
-    } else {
-      digitalWrite(RELAY_PIN, LOW);   // Turn off heating element
-    }
+  // Control heating based on error
+  if (error > 0) {
+    heat_algorithm(6000, 4000, currentMillis);
+  } else {
+    digitalWrite(RELAY_PIN, LOW);   // Turn off heating element
+  }
+
 }
 
 // Adjusts for a gradual temperature increase to accommodate the DHT22 sensor's slow response time.
-void heat_algorithm(int on_time, int off_time, unsigned long currentMillies){ 
-  if((currentMillies - previousMillis2) >= on_time ){
-    previousMillis2 = currentMillies;
-    digitalWrite(RELAY_PIN, HIGH);  // Turn on heating element
-  } else if((currentMillies - previousMillis2) >= off_time ){
-    previousMillis2 = currentMillies;
-    digitalWrite(RELAY_PIN, LOW);  // Turn on heating element
+void heat_algorithm(int on_time, int off_time, unsigned long currentMillis) {
+  static unsigned long lastToggleMillis = 0;
+
+  if (relayState && (currentMillis - lastToggleMillis >= on_time)) {
+    relayState = false;
+    digitalWrite(RELAY_PIN, LOW);
+    lastToggleMillis = currentMillis;
+  } else if (!relayState && (currentMillis - lastToggleMillis >= off_time)) {
+    relayState = true;
+    digitalWrite(RELAY_PIN, HIGH);
+    lastToggleMillis = currentMillis;
   }
 }
