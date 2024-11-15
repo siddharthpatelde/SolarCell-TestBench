@@ -63,22 +63,21 @@ void loop() {
       error = desiredTemp - rmsTemp;   
   }
 
-  if( (currentMillies - previousMillis2) >= 100 ){
-    currentMillies - previousMillis2;
+  
     if (error > 0) {
-      heat_algorithm(6000,4000);
+      heat_algorithm(6000,4000,currentMillies);
     } else {
       digitalWrite(RELAY_PIN, LOW);   // Turn off heating element
     }
-  }
 }
 
 // Adjusts for a gradual temperature increase to accommodate the DHT22 sensor's slow response time.
-void heat_algorithm(int on_time, int off_time){ 
+void heat_algorithm(int on_time, int off_time, unsigned long currentMillies){ 
   if((currentMillies - previousMillis2) >= on_time ){
+    previousMillis2 = currentMillies;
     digitalWrite(RELAY_PIN, HIGH);  // Turn on heating element
+  } else if((currentMillies - previousMillis2) >= off_time ){
+    previousMillis2 = currentMillies;
+    digitalWrite(RELAY_PIN, LOW);  // Turn on heating element
   }
-
-  digitalWrite(RELAY_PIN, LOW);  // Turn on heating element
-  delay(off_time);
 }

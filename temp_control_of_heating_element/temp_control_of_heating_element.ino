@@ -64,5 +64,4 @@ void loop() {
     digitalWrite(RELAY_PIN, LOW);   // Turn off heating element
   }
 
-
 }
