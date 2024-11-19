@@ -44,6 +44,23 @@ This project aims to develop a test bench for analyzing the voltage and current 
 **Video Demonstration:**  
 [![Step 3 Video](images/thumbnail_3.png)](https://drive.google.com/file/d/1_RXI9lnvPoCz-GgphQD-YolMGGgfK2b0/view?usp=sharing)
 
+### Step 4: Sensor Testing and Integration
+- Test the **ACS712 Current Sensor** with both Arduino and Raspberry Pi Pico.
+- Test the **Voltage Sensor** with both Arduino and Raspberry Pi Pico.
+- Combine the individual codes to create a unified script for measuring both current and voltage simultaneously.
+
+**Status:** DONE
+
+**Video Demonstration:**  
+[![Step 4 Video](images/thumbnail_4.png)](https://drive.google.com/file/d/1DAmKEw3BYv09oknZa6eHkeQwC9B74rZi/view?usp=sharing)
+
+**PDF Demonstration:**  
+
+- **Current Sensor Analysis: ACS712**  
+[![Current Sensor PDF](images/pdf_thumbnail_acs712.png)](docs/Current_Sensor_Analysis_ACS712.pdf)
+
+- **Voltage Sensor Analysis**  
+[![Voltage Sensor PDF](images/pdf_thumbnail_voltage.png)](docs/Voltage_Sensor_Analysis.pdf)
 
 
 
