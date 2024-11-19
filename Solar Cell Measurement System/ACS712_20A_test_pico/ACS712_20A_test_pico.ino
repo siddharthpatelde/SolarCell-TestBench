@@ -1,24 +1,17 @@
-//filterd adc value from current sensor
-
-#include <Filters.h>
-FilterOnePole lowpassFilter(LOWPASS, 0.5); // Smoothing filter
-float adc_filtered = 0;
-
+//This code is for raspbery pi Pico
 
 void setup() {
+  // put your setup code here, to run once:
   Serial.begin(9600);
 }
 
 void loop() {
-  float adc_non_filtered;
-  adc_non_filtered = analogRead(A0);
+  
+  int adc = analogRead(A0);
+  float voltage = adc * 3.3/ 1023;
+  float current = (voltage - 2.5) / 0.100; //for 20A 
 
-  // Print both non-filtered and filtered values
-  adc_filtered = lowpassFilter.input(adc_non_filtered);
-
-  Serial.print("non_Filterd ");
-  Serial.print(adc_non_filtered);
-  Serial.print(" Filterd  ");
-  Serial.println(adc_filtered);
-
+  Serial.print("Current : ");
+  Serial.println(current);
+  delay(300);
 }
