@@ -36,10 +36,16 @@ This project aims to develop a test bench for analyzing the voltage and current 
 
 
 ### Step 3: Implementing a Control Algorithm
-- Develop a **Proportional (P) control algorithm** that uses the RMS temperature value as feedback.
-- Adjust the heating element in response to deviations from the desired temperature, helping stabilize the environment for the solar cell.
+- Continuously monitor the **RMS** temperature and adjust the heating element's operation to minimize deviations from the target value.
+- Achieve a stable environment by dynamically controlling the heating element based on real-time feedback from the sensors.
 
-**Status:** In Progress
+**Status:** DONE
+
+**Video Demonstration:**  
+[![Step 3 Video](images/thumbnail_3.png)](https://drive.google.com/file/d/1_RXI9lnvPoCz-GgphQD-YolMGGgfK2b0/view?usp=sharing)
+
+
+
 
 *More steps will be added in the future*
 
