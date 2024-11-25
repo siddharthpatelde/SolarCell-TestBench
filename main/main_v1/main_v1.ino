@@ -17,7 +17,7 @@ DHT dht2(DHTPIN2, DHTTYPE);  // DHT sensor 2
 
 // Constants
 const float desiredTemp = 35.0;         // Target temperature
-const unsigned long rmsInterval = 100; // RMS temperature calculation interval
+const unsigned long rmsInterval = 500; // RMS temperature calculation interval
 const float voltageFactor = 3.3;       // Voltage factor for Raspberry Pi Pico
 const float currentOffset = 2.5;       // Current sensor offset voltage (V)
 const float currentSensitivity = 0.100; // Current sensor sensitivity (V/A)
@@ -67,6 +67,9 @@ void loop() {
   handleTemperatureControl(currentMillis);
 }
 
+
+
+
 void handleRelayToggling(unsigned long currentMillis) {
   int reading = digitalRead(BUTTON_PIN);
 
@@ -85,6 +88,7 @@ void handleRelayToggling(unsigned long currentMillis) {
   lastButtonState = reading;
 }
 
+
 void handleMeasurement(unsigned long currentMillis) {
   if (currentMillis - lastMeasurementTime >= measurementInterval) {
     lastMeasurementTime = currentMillis;
@@ -93,14 +97,19 @@ void handleMeasurement(unsigned long currentMillis) {
       int adcCurrent = analogRead(CURRENT_SENSOR_PIN);
       float voltageCurrent = adcCurrent * voltageFactor / 1023.0;
       float current = (voltageCurrent - currentOffset) / currentSensitivity;
-      Serial.print("Current (A): ");
-      Serial.println(current);
+        if (current < 0.16) {
+        current = 0;
+        }
+      Serial.print("Current (A) ");
+      Serial.print(current);
+      Serial.print(" ");
     } else {
       int adcVoltage = analogRead(VOLTAGE_SENSOR_PIN);
       float v_out = (adcVoltage / 1024.0) * v_cc;
       float voltageInput = v_out * voltageSensorFactor;
-      Serial.print("Voltage (V): ");
-      Serial.println(voltageInput);
+      Serial.print("Voltage (V) ");
+      Serial.print(voltageInput);
+      Serial.print(" ");
     }
   }
 }
@@ -119,7 +128,8 @@ void handleTemperatureControl(unsigned long currentMillis) {
     }
 
     float rmsTemp = sqrt((t1 * t1 + t2 * t2) / 2.0);
-    Serial.print("RMS Temperature (°C): ");
+
+    Serial.print("RMS Temperature (°C) ");
     Serial.println(rmsTemp);
 
     error = desiredTemp - rmsTemp;
@@ -144,3 +154,5 @@ void heatAlgorithm(int onTime, int offTime, unsigned long currentMillis) {
     lastToggleMillis = currentMillis;
   }
 }
+
+
