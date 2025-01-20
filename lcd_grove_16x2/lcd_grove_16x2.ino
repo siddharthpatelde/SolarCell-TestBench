@@ -1,8 +1,13 @@
 #include "DHT.h"
 #include <math.h>
 
+#include <Wire.h>     // include Arduino Wire library
+#include "rgb_lcd.h"  // include Seeed Studio LCD library
+
+rgb_lcd lcd;  // initialize LCD library
+
 // Pin definitions for relay and sensors
-#define RELAY_PIN_HEATER 4   // Relay pin for heater
+#define RELAY_PIN_HEATER 9   // Relay pin for heater
 #define BUTTON_PIN 7         // Button pin for relay toggling
 #define RELAY_PIN_MEASURE 8  // Relay pin for measurement (current/voltage)
 #define CURRENT_SENSOR_PIN A0 // Current sensor pin
@@ -20,7 +25,7 @@ const float desiredTemp = 35.0;         // Target temperature
 const unsigned long rmsInterval = 500; // RMS temperature calculation interval
 const float voltageFactor = 3.3;       // Voltage factor for Raspberry Pi Pico
 const float currentOffset = 2.5;       // Current sensor offset voltage (V)
-const float currentSensitivity = 0.185; // Current sensor sensitivity (V/A)
+const float currentSensitivity = 0.100; // Current sensor sensitivity (V/A)
 const float v_cc = 4.98;               // Measured input voltage to the Pico (V)
 const float voltageSensorFactor = 3.3; // Reduction factor of the voltage sensor
 
@@ -39,7 +44,7 @@ bool relayStateMeasure = false;  // State of relay for measurement
 bool relayStateHeat = false;     // State of relay for heating
 bool lastButtonState = LOW;      // Previous button state
 bool currentButtonState = LOW;   // Current button state
-float error = 0.0;               // Temperature error
+float Error = 0.0;               // Temperature error
 
 void setup() {
   pinMode(BUTTON_PIN, INPUT_PULLUP);
@@ -132,10 +137,15 @@ void handleTemperatureControl(unsigned long currentMillis) {
     Serial.print("RMS Temperature (°C) ");
     Serial.println(rmsTemp);
 
-    error = desiredTemp - rmsTemp;
+    Error = desiredTemp - rmsTemp;
+    
+      lcd.clear();  // Clear the LCD
+      lcd.setCursor(0, 0);  // Set cursor to the first row
+      lcd.print("Temp (C): ");
+      lcd.print(rmsTemp, 1);  // Display temperature with 1 decimal place
   }
 
-  if (error > 0) {
+  if (Error > 0) {
     heatAlgorithm(onTime, offTime, currentMillis);
   } else {
     digitalWrite(RELAY_PIN_HEATER, LOW);
@@ -154,3 +164,5 @@ void heatAlgorithm(int onTime, int offTime, unsigned long currentMillis) {
     lastToggleMillis = currentMillis;
   }
 }
+
+
